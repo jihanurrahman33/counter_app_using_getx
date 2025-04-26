@@ -1,7 +1,6 @@
+import 'package:counter/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,21 +11,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CounterController counterController = Get.find<CounterController>();
     return GetMaterialApp(
       initialBinding: ControllerBinder(),
       home: Scaffold(
         body: Center(
-          child: GetBuilder(
-            init: counterController,
-            builder: (controller) {
-              return Text(controller.count.toString());
-            },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GetBuilder<CounterController>(
+                builder: (controller) {
+                  return Text(controller.count.toString());
+                },
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.to(() => ProfileScreen());
+                },
+                child: Text('Go to profile'),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: counterController.increment,
-          child: Icon(Icons.add),
+        floatingActionButton: GetBuilder<CounterController>(
+          builder: (controller) {
+            return FloatingActionButton(
+              onPressed: controller.increment,
+              child: Icon(Icons.add),
+            );
+          },
         ),
       ),
     );
